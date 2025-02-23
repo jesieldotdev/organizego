@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { modules } from "../store";
 import { createSelector } from "@reduxjs/toolkit";
-import { getNestedField } from "@/utils/utils";
+import { getNestedField } from "../utils/utils";
 
 type ImportReturnType<T extends Record<string, (...args: any) => any>> = {
   [K in keyof T]: ReturnType<T[K]>;

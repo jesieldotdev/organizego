@@ -18,7 +18,7 @@ export const Home = () => {
         handleNewTodo,
         isModalOpen,
         handleCloseModal,
-        isLoading,
+        // isLoading,
     } = ControllerHome();
 
 
@@ -40,7 +40,7 @@ export const Home = () => {
                     toggleOption={toggleOption}
                 />
                 <div className="flex justify-center min-h-full">
-                    {isLoading ? <LoadingLottie /> : null}
+                    {false ? <LoadingLottie /> : null}
                 </div>
 
                 <div className="flex-grow overflow-y-scroll mb-24 rounded-2xl m-2 scroll-smooth" >
@@ -51,7 +51,7 @@ export const Home = () => {
                                 key={item.id}
                             />
                         ))}
-                        {!isLoading && !getTasks().length ? <p className="text-center">Nenhuma tarefa</p> : null}
+                        {!true && !getTasks().length ? <p className="text-center">Nenhuma tarefa</p> : null}
                     </div>
                 </div>
 

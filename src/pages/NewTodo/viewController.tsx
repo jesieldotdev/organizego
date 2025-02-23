@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import { useAppContext } from "../../context/AppContext"
 import { enqueueSnackbar } from "notistack"
 import { useState } from "react"
-import { addTodo } from "../../store/slices/tasks"
 import { useDispatch } from 'react-redux';
 
 interface ControllerNewTodoProps {
@@ -27,16 +26,7 @@ const dispatch = useDispatch()
             return enqueueSnackbar('Dê um título para sua tarefa! 👍');
         }
     
-        dispatch(addTodo({
-            title,
-            description,
-            startDate,
-            tags,
-            endDate
-        })).then(() => {
-            console.log('Tarefa adicionada com sucesso');
-            onClose();
-        })
+
         
     };
 

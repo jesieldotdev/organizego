@@ -1,4 +1,4 @@
-import { getNestedField } from "@/utils/utils";
+import { getNestedField } from "../../utils/utils";
 import { getDefaultTaskItem } from "./utils";
 
 export const getTask =

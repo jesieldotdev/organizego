@@ -9,14 +9,16 @@ import Store from "./store";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <SnackbarProvider>
-      <BrowserRouter>
-        <Store>
+    <BrowserRouter>
+      <Store>
+        <SnackbarProvider>
+
           <AppProvider>
             <App />
           </AppProvider>
-        </Store>
-      </BrowserRouter>
-    </SnackbarProvider>
+        </SnackbarProvider>
+
+      </Store>
+    </BrowserRouter>
   </React.StrictMode>
 );

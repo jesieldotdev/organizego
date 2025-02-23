@@ -1,6 +1,11 @@
 import { AxiosResponse } from "axios";
 import { setTask as setTaskTask } from "./reducer";
+import { stringify } from "querystring";
 
+interface Response {
+  message: string;
+  tasks: TaskItem[]
+}
 
 export const setTask =
   (...[, , , dispatch]: any) =>
@@ -30,40 +35,41 @@ export const setTaskItem =
     };
 
 
-    export const getTasks =
-    (_getState: () => RootState, actions: ActionsType) =>
-      (searchFilter?: SearchFilter<TaskItem>) =>
-        new Promise<AxiosResponse<PaginatedResponse<TaskItem>>>((resolve, reject) => {
-          const {
-            request: { POST },
-          } = actions;
-          POST<PaginatedResponse<TaskItem>>("tasks", searchFilter) 
-            .then(resolve)
-            .catch((error) => {
-              console.error("Error in getTasks:", error); 
-              reject(error);
-            });
-        });
-  
-  export const filterTasks =
-    (getState: () => RootState, actions: ActionsType) => () =>
-      new Promise<PaginatedResponse<TaskItem>>((resolve, reject) => {
+export const getTasks =
+  (_getState: () => RootState, actions: ActionsType) =>
+    (searchFilter?: SearchFilter<TaskItem>) =>
+      new Promise<AxiosResponse<Response>>((resolve, reject) => {
         const {
-          task: { getTasks, setTask },
+          request: { GET },
         } = actions;
-        const state = getState();
-        const searchFilter = state.task.filter.task.filter;
-        
-  
-        getTasks(searchFilter)
-          .then(({ data }) => {
-            setTask("filter.task.data", data); 
-            resolve(data);
-          })
+        GET
+          <Response>("tasks")
+          .then(resolve)
           .catch((error) => {
-            console.error("Error in filterTasks:", error); 
+            console.error("Error in getTasks:", error);
             reject(error);
           });
       });
-  
+
+export const filterTasks =
+  (getState: () => RootState, actions: ActionsType) => () =>
+    new Promise<Response>((resolve, reject) => {
+      const {
+        task: { getTasks, setTask },
+      } = actions;
+      const state = getState();
+      const searchFilter = state.task.filter.task.filter;
+
+
+      getTasks(searchFilter)
+        .then(({ data }) => {
+          setTask("items", data.tasks);
+          resolve(data);
+        })
+        .catch((error) => {
+          console.error("Error in filterTasks:", error);
+          reject(error);
+        });
+    });
+
 
