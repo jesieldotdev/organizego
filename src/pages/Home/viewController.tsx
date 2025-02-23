@@ -19,9 +19,9 @@ export const ControllerHome = () => {
 
     const options = ['Pendentes', 'Feitas'];
     
-    React.useEffect(() => {
-        if (!isLogging) route('/login')
-    }, [isLogging])
+    // React.useEffect(() => {
+    //     if (!isLogging) route('/login')
+    // }, [isLogging])
 
     function onNewTodo() {
         route('/new')

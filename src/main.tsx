@@ -5,14 +5,17 @@ import App from './App';
 import './index.css';
 import { AppProvider } from './context/AppContext';
 import { SnackbarProvider } from 'notistack';
+import Store from "./store";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <SnackbarProvider>
       <BrowserRouter>
-        <AppProvider>
-          <App />
-        </AppProvider>
+        <Store>
+          <AppProvider>
+            <App />
+          </AppProvider>
+        </Store>
       </BrowserRouter>
     </SnackbarProvider>
   </React.StrictMode>
