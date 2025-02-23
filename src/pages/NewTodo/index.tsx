@@ -9,7 +9,7 @@ import { NewTaskMobile } from "./components/NewTaskMobile";
 
 export const NewTodo = ({ onClose }) => {
     const {
-        addTodo,
+        addTodoHandler,
         description,
         setDescription,
         title,
@@ -19,7 +19,8 @@ export const NewTodo = ({ onClose }) => {
         setStartDate,
         setEndDate,
         tags,
-        setTags
+        setTags,
+
     } = ControllerNewTodo(
         { onClose }
     );
@@ -53,7 +54,7 @@ export const NewTodo = ({ onClose }) => {
                     <NewTaskMobile
                         title={title}
                         setTitle={setTitle}
-                        addTodo={addTodo}
+                        addTodo={addTodoHandler}
                         description={description}
                         endDate={endDate}
                         onClose={onClose}
@@ -69,7 +70,7 @@ export const NewTodo = ({ onClose }) => {
                     <NewTaskModalDesktop
                         title={title}
                         setTitle={setTitle}
-                        addTodo={addTodo}
+                        addTodo={addTodoHandler}
                         description={description}
                         endDate={endDate}
                         onClose={onClose}

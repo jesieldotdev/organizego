@@ -22,6 +22,9 @@ export const Card = ({ todo }: CardProps) => {
         tagSearch
     } = ControllerCard({ todo })
 
+    const formattedDate = todo.created_at ? dayjs(todo.created_at).format("DD [de] MMMM") : 'Data inválida';
+ 
+
 
     return (
         <div className={`mb-2 flex flex-col justify-between rounded-lg p-4 m-1 bg-white cursor-pointer shadow-sm max-h-72`}>
@@ -33,28 +36,28 @@ export const Card = ({ todo }: CardProps) => {
             </div>
 
             <div >
-                <p onClick={() => onChangeState()} className={`font-bold text-lg text-zinc-600 p-2  ${done ? `line-through` : ''}`}>{todo?.title}</p>
-                <p className={`font-normal text-zinc-600 p-2 whitespace-normal overflow-hidden line-clamp-2 ${done ? `line-through` : ''}`}>
+                <p onClick={async () => await onChangeState(todo.id, todo?.status)} className={`font-bold text-lg text-zinc-600 p-2  ${todo.status === "completed"  ? `line-through` : ''}`}>{todo?.title}</p>
+                <p className={`font-normal text-zinc-600 p-2 whitespace-normal overflow-hidden line-clamp-2 ${todo.status === "completed" ? `line-through` : ''}`}>
                     {todo?.description}
                 </p>
 
-                <div className={`font-normal text-sm  p-2 overflow-ellipsis text-green-400 `}>{todo?.tags.map(item => <div key={item}><button onClick={() => tagSearch(item)} className="underline " >#{item}</button><br /></div>)}</div>
+                {/* <div className={`font-normal text-sm  p-2 overflow-ellipsis text-green-400 `}>{!!todo.tags.length && todo.tags.map(item => <div key={item}><button onClick={() => tagSearch(item)} className="underline " >#{item}</button><br /></div>)}</div> */}
             </div>
 
             <div className="flex flex-row align-bottom justify-between  border-t mt-4 pt-2">
 
                 <div className="flex align-middle">
 
-                    <p className=" text-xs text-slate-400 mr-2">{dayjs(todo?.end_date).format(`DD [de] MMMM`)}</p>
+                    <p className=" text-xs text-slate-400 mr-2">{formattedDate}</p>
                     {
-                        done ? <div className="bg-iphone-blue text-iphone-white text-xs rounded-full p-1"><Check size={12} /></div> : null
+                        todo.status === "completed"  ? <div className="bg-iphone-blue text-iphone-white text-xs rounded-full p-1"><Check size={12} /></div> : null
                     }
                 </div>
 
 
 
 
-                <Archive onClick={() => onRemoveTask()} className="mt-auto w-5 h-5 text-zinc-800" />
+                <Archive onClick={() => onRemoveTask(todo?.id)} className="mt-auto w-5 h-5 text-zinc-800" />
 
 
             </div>

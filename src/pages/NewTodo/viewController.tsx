@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { useAppContext } from "../../context/AppContext"
 import { enqueueSnackbar } from "notistack"
 import { useState } from "react"
+import { addTodo } from "../../store/slices/tasks"
+import { useDispatch } from 'react-redux';
 
 interface ControllerNewTodoProps {
     onClose: () => void
@@ -15,45 +17,32 @@ export const ControllerNewTodo = ({ onClose }: ControllerNewTodoProps) => {
     const [endDate, setEndDate] = useState<Date>(new Date());
     const route = useNavigate()
 
-
+const dispatch = useDispatch()
 
     const date = new Date()
     const { setTasks, user } = useAppContext()
 
-    const addTodo = () => {
-        if (title === '' || title === undefined) return enqueueSnackbar('Dê um titulo pra sua tarefa! 👍')
-        fetch(`${import.meta.env.VITE_API_URL}/tasks`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                title: title,
-                description: description,
-                author_id: 1,
-                start_date: startDate,
-                end_date: startDate,
-                tags: tags
-
-
-            }),
+    const addTodoHandler = () => {
+        if (title === '' || title === undefined) {
+            return enqueueSnackbar('Dê um título para sua tarefa! 👍');
+        }
+    
+        dispatch(addTodo({
+            title,
+            description,
+            startDate,
+            tags,
+            endDate
+        })).then(() => {
+            console.log('Tarefa adicionada com sucesso');
+            onClose();
         })
-            .then(response => response.json())
-            .then(data => {
-                setTasks(prev => {
-
-                    return [...prev, data]
-                })
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-        onClose()
+        
     };
 
 
     return {
-        addTodo,
+        addTodoHandler,
         date,
         description,
         user,
@@ -70,3 +59,4 @@ export const ControllerNewTodo = ({ onClose }: ControllerNewTodoProps) => {
 
     }
 }
+

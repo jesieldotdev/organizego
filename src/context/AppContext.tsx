@@ -88,13 +88,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const timeoutId = setTimeout(() => {
         }, 200);
 
-        fetch(`${import.meta.env.VITE_API_URL}/tasks`)
-            .then(response => response.json())
-            .then(data => {
-                setTasks(data.tasks);
-                // setTasks(isReverseOrder ? data.reverse() : data);
-                setIsLoading(false);
-            });
+        // fetch(`${import.meta.env.VITE_API_URL}/tasks`)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         setTasks(data.tasks);
+        //         // setTasks(isReverseOrder ? data.reverse() : data);
+        //         setIsLoading(false);
+        //     });
 
         return () => clearTimeout(timeoutId);
     }, []);

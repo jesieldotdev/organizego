@@ -1,7 +1,10 @@
 import { useAppContext } from "../../../../context/AppContext"
 import { Task } from "@/models/models"
-import { useState } from "react"
-
+import { useEffect, useState } from "react"
+import { enqueueSnackbar } from 'notistack';
+import { AppDispatch, RootState } from "../../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTaskState, fetchTasks, removeTodo } from "../../../../store/slices/tasks";
 interface ControllerCardProps{
     todo: Task
 }
@@ -10,44 +13,54 @@ export const ControllerCard = ({
     todo
 }:ControllerCardProps) => {
 
-    const { fetchTasks, setSearchText } = useAppContext()
-    const [done, setDone] = useState(todo.status === 'completed')
+    const { setSearchText } = useAppContext()
+    const [done, setDone] = useState(false)
+
+
+
+
 
     function tagSearch(item: string){
         setSearchText(item)
     }
 
-    async function onChangeState() {
-        setDone(!done)
-        await fetch(`${import.meta.env.VITE_API_URL}/tasks/${todo.id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                status: done ? 'incompleted' : 'completed',
-            }),
-        })
-            .then(res => res.json())
-            .catch(error => console.error('Erro ao atualizar os dados:', error));
-        return fetchTasks()
-    }
+    const dispatch: AppDispatch = useDispatch();
+    const {  loading, name, tasks } = useSelector((state: RootState) => state.tasks);
 
-    async function onRemoveTask() {
-        setDone(!done)
-        await fetch(`${import.meta.env.VITE_API_URL}/tasks/${todo.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-            .then(res => res.json())
-            .catch(error => console.error('Erro ao atualizar os dados:', error));
-        fetchTasks()
-    }
+    const onChangeState = async (taskId: number, currentStatus: string) => {
+      try {
+        // Despachando a ação changeTaskState para atualizar o status da tarefa
+        const newStatus = currentStatus === 'completed' ? 'incomplete' : 'completed';
+        
+        // Dispara a ação para alterar o estado da tarefa
+        await dispatch(changeTaskState({ taskId, status: newStatus })).unwrap();
+        
+        enqueueSnackbar('Estado da tarefa atualizado com sucesso!');
+      } catch (error: any) {
+        // Melhorando o tratamento de erro
+        const errorMessage = error?.message || 'Erro desconhecido ao atualizar o estado da tarefa';
+        enqueueSnackbar(errorMessage);
+      }
+    };
+    
+
+    const onRemoveTask = async (taskId: number) => {
+        try {
+          // Despachando a ação removeTodo e aguardando sua conclusão
+          await dispatch(removeTodo(taskId)).unwrap();
+          enqueueSnackbar('Tarefa excluída!');
+        } catch (error) {
+          enqueueSnackbar('Erro ao excluir a tarefa: ' + error);
+        }
+      };
 
 
+      useEffect(()=> {
+        if(todo.status === "incomplete") return setDone(false)
+        else return  setDone(true)
+      },[ dispatch])
 
+      console.log(done)
 
     return {
         onRemoveTask,

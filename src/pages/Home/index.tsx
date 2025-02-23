@@ -21,6 +21,7 @@ export const Home = () => {
         isLoading,
     } = ControllerHome();
 
+
     return (
         <div className="border-l ">
             <AnimatePresence>
@@ -30,7 +31,7 @@ export const Home = () => {
             </AnimatePresence>
             
 
-            <div className="px-4 pt-4 bg-[#f9f9f9] max-h-screen flex flex-col ">
+            <div className="px-4 pt-4 bg-[#f9f9f9] min-h-screen flex flex-col ">
                 <Actions
                     selectedOptions={selectedOptions}
                     changeOrder={changeOrder}
@@ -38,7 +39,7 @@ export const Home = () => {
                     options={options}
                     toggleOption={toggleOption}
                 />
-                <div className="flex justify-center">
+                <div className="flex justify-center min-h-full">
                     {isLoading ? <LoadingLottie /> : null}
                 </div>
 

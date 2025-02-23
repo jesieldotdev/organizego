@@ -64,7 +64,11 @@ export const NewTaskModalDesktop = ({
                 setEndDate={setEndDate}
                 setStartDate={setStartDate} />
             <button
-                onClick={() => addTodo()}
+                onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    addTodo()
+                }}
                 type="submit"
                 className="text-white flex items-center justify-center bg-blue-600 hover:bg-blue-700 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-lg px-5 py-3 transition duration-300">
                 <CalendarCheck className="mr-2" />
